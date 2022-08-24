@@ -49,7 +49,7 @@ const signup_post = async (req,res)=>{
     const { email, password } = req.body
     try {
         const user = await users.create({ email, password })
-        res.status(201).json(user)
+        res.status(201).json({ user, redirect: '/login'})
     } catch (error) {
         const errors = handleErrors(error)
         res.status(404).json({ errors })
@@ -70,7 +70,7 @@ const login_post = async (req, res)=>{
                 //store token inside a cookie
                 const time = 24 * 60 * 60 * 1000
                 res.cookie('jwt', token, { maxAge: time })
-                res.redirect('/dashboard')
+                // res.redirect('/dashboard')
             }
             throw Error('incorrect password')
         }
