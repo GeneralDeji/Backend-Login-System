@@ -26,6 +26,7 @@ const handleErrors = (err) => {
 //auth jwt
 //headers // payload // signature (seconds)
 
+//use createToken in (login_post)
 const createToken = (id) =>{
     return jwt.sign({ id }, process.env.MY_SECRET, { expiresIn: 24 * 60 * 60 })
 }
@@ -69,7 +70,7 @@ const login_post = async (req, res)=>{
                 //store token inside a cookie
                 const time = 24 * 60 * 60 * 1000
                 res.cookie('jwt', token, { maxAge: time })
-                return res.status(200).json({ theUser, redirect: '/dashboard' })
+                return res.status(200).json({ theUser, redirect: '/dashboard' }) //make sure there is a "return" so the code would not develop an error
                 // res.redirect('/dashboard')
             }
             throw Error('incorrect password')
@@ -81,4 +82,10 @@ const login_post = async (req, res)=>{
     }
 }
 
-module.exports = { renderIndexPage, renderLoginPage, signup_post, renderDashboard, login_post }
+//logout function
+const logout = (req, res)=>{
+    res.cookie("jwt", '', {maxAge: 1000})
+    res.redirect('/login')
+}
+
+module.exports = { renderIndexPage, renderLoginPage, signup_post, renderDashboard, login_post, logout }

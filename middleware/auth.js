@@ -21,4 +21,24 @@ const requiredAuthProcess = ( req , res , next )=>{
 
 }
 
-module.exports = requiredAuthProcess
+// to check current user that is logged in
+const checkCurrentUser = (req, res, next)=>{
+    const token = req.cookies.jwt;
+    if(token){
+        jwt.verify(token, process.env.MY_SECRET, async (err, decodedToken)=>{
+            if(err){
+                res.locals.user = null
+                next()
+            } else{
+                const user = await users.findById(decodedToken.id)
+                res.locals.user = user;
+                next()
+            }
+        })
+    }else{
+        res.locals.user = null
+        next()
+    }
+}
+
+module.exports = {requiredAuthProcess, checkCurrentUser}

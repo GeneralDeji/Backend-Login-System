@@ -7,6 +7,10 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>My Dashboard</h1>
+    
+    <% if(user){ %>
+        <h2> welcome, <%= user.email %></h2>
+    <% } %>
+    <button> <a href="/logout"> Log out </a></button>
 </body>
 </html>
