@@ -64,12 +64,12 @@ const login_post = async (req, res)=>{
         if( theUser ){
             const correctPassword = await bcrypt.compare(password, theUser.password)
             if(correctPassword){
-                // res.status(200).json({ theUser })
                 // create token
                 const token = createToken(theUser._id)
                 //store token inside a cookie
                 const time = 24 * 60 * 60 * 1000
                 res.cookie('jwt', token, { maxAge: time })
+                return res.status(200).json({ theUser, redirect: '/dashboard' })
                 // res.redirect('/dashboard')
             }
             throw Error('incorrect password')

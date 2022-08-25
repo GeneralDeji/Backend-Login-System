@@ -8,5 +8,6 @@ router.get('/', renderIndexPage);
 router.get('/login', renderLoginPage);
 router.get("/dashboard", requiredAuthProcess, renderDashboard)
 router.post('/', signup_post)
+router.post('/login', login_post)
 
 module.exports = router;
